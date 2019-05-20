@@ -16,9 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from core import views as core_views
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('wolves/', include('wolves.urls')),
     path('admin/', admin.site.urls),
-    path('signup/', core_views.signup, name='signup')
+    path('signup/', core_views.signup, name='signup'),
+    path('signin/', auth_views.LoginView.as_view(template_name="core/signin.html"), name="signin"),
+    path('signout/', auth_views.LogoutView.as_view(template_name="core/signout.html"), name="signout"),
 ]
