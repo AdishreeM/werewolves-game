@@ -1,0 +1,15 @@
+# VS Code.
+.vscode/
+
+# Virtual Environment
+venv/
+
+# Python
+*.pyc
+__pycache__
+
+# Throwaway files, containing the substring 'delete'
+*delete*
+
+# Static and throwaway files
+logs/
