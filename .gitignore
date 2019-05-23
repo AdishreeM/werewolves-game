@@ -1,0 +1,21 @@
+# VS Code.
+.vscode/
+
+# Virtual Environment
+venv/
+
+# Python
+*.pyc
+__pycache__
+
+# Throwaway files, containing the substring 'delete'
+*delete*
+
+# Static and throwaway files
+logs/
+
+# Migrations and database
+db.sqlite3
+
+website/*/migrations/*
+!website/*/migrations/__init__.py
