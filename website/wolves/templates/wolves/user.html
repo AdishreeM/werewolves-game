@@ -1,24 +1,29 @@
-<script type="text/javascript">
-    function joinCheck() {
-        if (document.getElementById('join').checked) {
-            document.getElementById('ifJoin').style.visibility = 'visible';
+{% extends 'wolves/base.html' %}
+
+{% block content %}
+    <script type="text/javascript">
+        function joinCheck() {
+            if (document.getElementById('join').checked) {
+                document.getElementById('ifJoin').style.visibility = 'visible';
+            }
+            else document.getElementById('ifJoin').style.visibility = 'hidden';
         }
-        else document.getElementById('ifJoin').style.visibility = 'hidden';
-    }
-</script>
+    </script>
 
-<h2> Welcome, {{ request.user.username }} </h2>
+    <h2> Welcome, {{ request.user.username }} </h2>
 
-To start a new game, you have to become the moderator and create a room.
-<br>
-To enter an existing game, you have to enter the unique room name you want to play in.<br><br>
+    To start a new game, you have to become the moderator and create a room.
+    <br>
+    To enter an existing game, you have to enter the unique room name you want to play in.<br><br>
 
-<form method="post" action="">
-    {% csrf_token %}
-    <input type="radio" onclick="javascript:joinCheck();" name="choice" id="create" value="create" checked> Create a Room<br>
-    <input type="radio" onclick="javascript:joinCheck();" name="choice" id="join" value="join"> Join a Room <br>
-    <div id="ifJoin" style="visibility:hidden">
-        <br> Enter Room Name: <input type='text' id='room_name' name='room_name' value='room_name'><br>
-    </div> <br>
-    <button type="submit">Submit</button>
-</form>
+    <form method="post" action="">
+        {% csrf_token %}
+        <input type="radio" onclick="javascript:joinCheck();" name="choice" id="create" value="create" checked> Create a Room<br>
+        <input type="radio" onclick="javascript:joinCheck();" name="choice" id="join" value="join"> Join a Room <br>
+        <div id="ifJoin" style="visibility:hidden">
+            <br> Enter Room Name: <input type='text' id='room_name' name='room_name' value='room_name'><br>
+        </div> <br>
+        <button type="submit">Submit</button>
+    </form>
+
+{% endblock content %}
