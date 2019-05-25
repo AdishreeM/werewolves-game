@@ -2,7 +2,7 @@
 {% block title %}Room: {{ request.user.player.room.name }}{% endblock %}
 {% block content %}
 
-    <h2>Welcome to your room <em>{{ request.user.player.room.name }}</em>!</h2> <br>
+    <h2>Welcome to <em>{{ request.user.player.room.name }}</em>!</h2> <br>
 
     <button id="showrole">Press to show role</button>
     <div id="role" hidden=true></div>
