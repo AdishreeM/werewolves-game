@@ -70,4 +70,9 @@ def room(request):
 def table(request):
     players = request.user.room.players
     return render(request, 'wolves/room_table.html', {'players': players})
+
+def role(request):
+    present_role = request.user.player.role
+    data = {'role': roles_i2c[present_role]}
+    return JsonResponse(data)
     
