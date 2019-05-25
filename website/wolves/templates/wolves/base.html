@@ -16,7 +16,7 @@
         <div class="logo"><a href="{% url 'index' %}">Wolves</a></div>
 
         <ul class="nav-links">
-            {% if user.is_authenticated %}
+           {% if user.is_authenticated %}
                 <div class="username">{{ request.user.username }}</div>
                 <li class="signout"><a href="{% url 'signout' %}">Sign Out</a></li>
             {% else %}

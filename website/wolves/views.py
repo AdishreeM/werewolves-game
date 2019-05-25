@@ -4,8 +4,7 @@ from .models import Player, Room
 from .namegen.generator import generate
 from .assign import assign
 
-roles_i2c = {0:'Unassigned', 1:'Moderator', 2:'Doctor',
-                3:'Seer', 4:'Werewolves', 5:'Villager'}
+roles_i2c = {0:'Unassigned', 1:'Moderator', 2:'Doctor', 3:'Seer', 4:'Werewolves', 5:'Villager'}
 
 def index(request):
     # User not signed in
@@ -25,7 +24,7 @@ def index(request):
                     flag = 0
                     if Room.objects.filter(name=room_name).exists():
                         flag = 1
-                        for i in range(4):
+                        for _ in range(4):
                             room_name = generate()
                             if not Room.objects.filter(name=room_name).exists():
                                 flag = 0
@@ -33,7 +32,7 @@ def index(request):
                     if flag == 1:
                         return HttpResponse("Sorry, we are facing heavy traffic. Try again later :/")
                     else:
-                        new_room = Room(name=room_name, assgned = 0)
+                        new_room = Room(name=room_name, assgned = False)
                         new_room.save()
                         new_player = Player(user=request.user, room=new_room, role=1)
                         new_player.save()

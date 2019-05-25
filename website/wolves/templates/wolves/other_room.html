@@ -1,0 +1,20 @@
+{% extends "wolves/base.html" %}
+{% block title %}Room: {{ request.user.player.room.name }}{% endblock %}
+{% block content %}
+
+    <script type="text/javascript">
+        function showRole() {
+            
+            msg = 'Role: ' + role; 
+            alert(msg);
+        }
+    </script>
+
+    <h2>Welcome to room, {{ request.user.player.room.name }}!</h2>
+    <div>
+        
+    </div>
+
+    <button onclick="showRole()">Show my Role</button>
+
+{% endblock %}

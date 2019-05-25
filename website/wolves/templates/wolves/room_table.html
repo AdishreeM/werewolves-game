@@ -1,0 +1,13 @@
+<table>
+        <h3>Player List:</h3> <br>
+        {% for player in players %}
+        <tr>
+            <th>Name</th>
+            <th>Role</th>
+        </tr>
+        <tr>
+           <td>{{player.user.username}}</td>
+           <td>{{player.user}}</td>
+           </tr>
+        {% endfor %}
+</table>

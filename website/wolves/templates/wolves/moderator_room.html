@@ -1,0 +1,29 @@
+{% extends "wolves/base.html" %}
+{% block title %}Room: {{ request.user.player.room.name }}{% endblock %}
+{% block content %}
+    
+    <script type="text/javascript">
+        function removeForm() {
+            var assigned = "{{ request.user.player.room.assigned }}"; 
+            if (assigned == "True")
+                document.getElementById('room_form').style.visibility = 'hidden';           
+        }
+    </script>
+
+    <h2>Welcome to room, {{ request.user.player.room.name }}!</h2>
+    
+    <div id="room-table" style="visibility:hidden" >
+        
+    </div>
+    
+    <div id="room_form" style="visibility: visible" onload="removeForm()">
+        <form action="{% url '' %}" method="post">
+            {% csrf_token %}
+            Enter the number of doctors: <input type="number" name="doctor"> <br>
+            Enter the number of seers: <input type="number" name="seer"> <br>
+            Enter the number of werewolves: <input type="number" name="wolf"> <br>
+            Enter the number of villagers: <input type="number" name="villager"> <br>
+            <button type="submit">Assign Roles</button>
+        </form>
+    </div>
+{% endblock %}

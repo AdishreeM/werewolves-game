@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 
 class Room(models.Model):
     name = models.CharField(max_length=200)
-    assigned = models.BooleanField(default = )
+    assigned = models.BooleanField(default = False)
 
 class Player(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
