@@ -15,9 +15,14 @@
 
         <div class="logo"><a href="{% url 'index' %}">Wolves</a></div>
 
+        <div class="username">{{ request.user.username }}</div>
+
+        {% if request.user.is_authenticated %}
+        <div class="navsep"></div>
+        {% endif %}
+
         <ul class="nav-links">
-            {% if user.is_authenticated %}
-                <div class="username">{{ request.user.username }}</div>
+            {% if request.user.is_authenticated %}
                 <li class="logout"><a href="{% url 'signout' %}">Log Out</a></li>
             {% else %}
                 <li class="login"><a href="{% url 'signin' %}">Log In</a></li>
