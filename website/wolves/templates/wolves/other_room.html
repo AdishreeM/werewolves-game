@@ -2,45 +2,52 @@
 {% block title %}Room: {{ request.user.player.room.name }}{% endblock %}
 {% block content %}
 
-    <script type="text/javascript">
-        
-        role = "Unassigned"
-        $("#showrole").mousedown(function(event)
-        {
-            if (role == 'Unassigned') 
-            {
-                $.ajax({
-                            url: 'wolves/role',
-                            data: {},
-                            dataType: 'json',
-                            success: function (data) 
-                            {
-                                if (data.role != role)
-                                {
-                                    role = data.role;
-                                }
-                            }
-                        });
-            }
-            $("#role").html(role).show()
-            setTimeout(
-                function() {
-                    $("#role").hide()
-                },
-                500
-            )
-        })
-        
-    </script>
-
     <h2>Welcome to your room <em>{{ request.user.player.room.name }}</em>!</h2> <br>
-    <div>
-        
-    </div>
 
-   
     <button id="showrole">Press to show role</button>
     <div id="role" hidden=true></div>
-        
-    
+
 {% endblock %}
+
+
+{% block scripts %}
+
+<script type="text/javascript">
+    function showrole() {
+        $("#role").html(role).show()
+        setTimeout(
+            function() {
+                $("#role").hide()
+            },
+            500
+        )
+    }
+
+    role = "Uninitialized"
+    $("#showrole").mousedown(function(event)
+    {
+        if (role == 'Uninitialized') 
+        {
+            $.ajax({
+                        url: "{% url 'role' %}",
+                        data: {},
+                        // dataType: 'json',
+                        success: function (data) 
+                        {
+                            if (data.role != role)
+                            {
+                                role = data.role;
+                            }
+                            showrole()
+                        }
+                    });
+        }
+        else {
+            showrole()
+        }
+        
+    })
+    
+</script>
+
+{% endblock scripts %}
