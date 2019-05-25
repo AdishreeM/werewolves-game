@@ -1,13 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
+{% extends "wolves/base.html" %}
+{% block title %}Sign Out{% endblock %}
+{% block content %}
     <h2> Good Bye Already? </h2>
     You have successfully signed out.
     <br>
     <br>
     <a href= "{% url 'index' %}">Go Back Home</a>
-</body>
-</html>
+{% endblock content %}

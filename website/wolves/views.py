@@ -25,18 +25,15 @@ def index(request):
                     flag = 0
                     if Room.objects.filter(name=room_name).exists():
                         flag = 1
-                        i = 0
-                        while i<4:
+                        for i in range(4):
                             room_name = generate()
-                            if Room.objects.filter(name=room_name).exists():
-                                i += 1
-                            else:
+                            if not Room.objects.filter(name=room_name).exists():
                                 flag = 0
                                 break
                     if flag == 1:
                         return HttpResponse("Sorry, we are facing heavy traffic. Try again later :/")
                     else:
-                        new_room = Room(name=room_name)
+                        new_room = Room(name=room_name, assgned = 0)
                         new_room.save()
                         new_player = Player(user=request.user, room=new_room, role=1)
                         new_player.save()
@@ -60,12 +57,18 @@ def index(request):
             return redirect('room')        
 
 def room(request):
-    # user_name = request.user.username
-    # room_name = request.user.player.room.name
-    # msg = 'Hi '+ user_name +'! You are in Room: ' + room_name
-    # return HttpResponse(msg)
-    if request.method == 'POST':
-        if request.user.player.role == 1: # Moderator
-            assign(request.user.player.room)
+    if request.method == 'POST' and request.user.player.role == 1: # Moderator
+            role_dict = {2:request.POST.get('doctor'), 3:request.POST.get('seer'),
+                             4:request.POST.get('wolf'), 5:request.POST.get('villager') }
+            assign(request.user.player.room.name, role_dict)
+            return render(request, 'wolves/moderator_room.html')
+    else:
+        if request.user.player.role == 1:
+            return render(request, 'wolves/moderator_room.html')
         else:
-            role = request.user.player.role
+            return render(request, 'wolves/other_room.html', {'roles': roles_i2c})
+
+def table(request):
+    players = request.user.room.players
+    return render(request, 'wolves/room_table.html', {'players': players})
+    

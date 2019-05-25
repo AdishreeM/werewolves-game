@@ -1,9 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Sign In</title>
-</head>
-<body>
+{% extends "wolves/base.html" %}
+{% block title %}Sign In{% endblock %}
+{% block content %}
     <h2>Sign In</h2>
     <form method="POST">
         {% csrf_token %}
@@ -17,5 +14,4 @@
         </p>
         <button type="submit">Into the Cave</button>
     </form>
-</body>
-</html>
+{% endblock content %}

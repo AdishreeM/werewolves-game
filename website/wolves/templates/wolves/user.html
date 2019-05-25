@@ -1,5 +1,5 @@
 {% extends 'wolves/base.html' %}
-
+{% block title %}Welcome{% endblock %}
 {% block content %}
     <script type="text/javascript">
         function joinCheck() {
@@ -18,10 +18,10 @@
 
     <form method="post" action="">
         {% csrf_token %}
-        <input type="radio" onclick="javascript:joinCheck();" name="choice" id="create" value="create" checked> Create a Room<br>
-        <input type="radio" onclick="javascript:joinCheck();" name="choice" id="join" value="join"> Join a Room <br>
+        <input type="radio" onclick="javascript:joinCheck();" name="choice" id="create" value="create" checked> Create a Room<br><br>
+        <input type="radio" onclick="javascript:joinCheck();" name="choice" id="join" value="join"> Join a Room <br><br>
         <div id="ifJoin" style="visibility:hidden">
-            <br> Enter Room Name: <input type='text' id='room_name' name='room_name' value='room_name'><br>
+            <br> Enter Room Name: <input type='text' id='room_name' name='room_name' value='room_name'><br><br>
         </div> <br>
         <button type="submit">Submit</button>
     </form>

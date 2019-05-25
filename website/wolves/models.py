@@ -6,8 +6,9 @@ from django.contrib.auth.models import User
 
 class Room(models.Model):
     name = models.CharField(max_length=200)
+    assigned = models.BooleanField(default = )
 
 class Player(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    room = models.ForeignKey(Room, on_delete=models.SET_NULL, null=True)
+    room = models.ForeignKey(Room, on_delete=models.SET_NULL, null=True, related_name='players')
     role = models.IntegerField(default = 0)
