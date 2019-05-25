@@ -17,7 +17,7 @@
     </div>
     
     <div id="room_form" style="visibility: visible" onload="removeForm()">
-        <form action="{% url '' %}" method="post">
+        <form method="POST">
             {% csrf_token %}
             Enter the number of doctors: <input type="number" name="doctor"> <br>
             Enter the number of seers: <input type="number" name="seer"> <br>

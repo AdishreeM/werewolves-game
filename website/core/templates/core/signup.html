@@ -1,7 +1,7 @@
 {% extends "wolves/base.html" %}
 {% block title %}Sign Up{% endblock %}
 {% block content %}
-  <h2>Sign Up</h2>
+  <h2>Sign Up</h2> <br>
   <form action="{% url 'signup' %}" method="post">
     {% csrf_token %}
     {{ form.as_p }}
