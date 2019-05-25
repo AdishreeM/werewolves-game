@@ -9,14 +9,14 @@ roles_i2c = {0:'Unassigned', 1:'Moderator', 2:'Doctor', 3:'Seer', 4:'Werewolves'
 def index(request):
     # User not signed in
     if not request.user.is_authenticated:
-        return render(request, 'wolves/index.html')
+        return render(request, 'wolves/index_anon.html')
     
     # User signed in
     else:
         # Room doesn't exist
         if not hasattr(request.user, 'player'):
             if request.method == 'GET':
-                return render(request, 'wolves/user.html')
+                return render(request, 'wolves/index_authed.html')
             else:
                 # Create a room -> Moderator
                 if request.POST.get('choice') == 'create': 
@@ -60,12 +60,12 @@ def room(request):
             role_dict = {2:request.POST.get('doctor'), 3:request.POST.get('seer'),
                              4:request.POST.get('wolf'), 5:request.POST.get('villager') }
             assign(request.user.player.room.name, role_dict)
-            return render(request, 'wolves/moderator_room.html')
+            return render(request, 'wolves/room_mod.html')
     else:
         if request.user.player.role == 1:
-            return render(request, 'wolves/moderator_room.html')
+            return render(request, 'wolves/room_mod.html')
         else:
-            return render(request, 'wolves/other_room.html', {'roles': roles_i2c})
+            return render(request, 'wolves/room_player.html', {'roles': roles_i2c})
 
 def table(request):
     players = request.user.room.players
