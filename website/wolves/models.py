@@ -12,3 +12,6 @@ class Player(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     room = models.ForeignKey(Room, on_delete=models.SET_NULL, null=True, related_name='players')
     role = models.IntegerField(default = 0)
+
+    def is_moderator(self):
+        return self.role == 1
