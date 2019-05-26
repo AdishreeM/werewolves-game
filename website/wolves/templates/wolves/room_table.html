@@ -1,18 +1,18 @@
-<table>
-        <h3>Player List:</h3> <br>
+<table border="1">
+        <h3>Player List:</h3>
         <tr>
-                <th>Sl. No</th>
-                <th>Player Name</th>
-                <th>Player Role</th>
+                <th>SNo.</th>
+                <th>P Name</th>
+                <th>P Role</th>
         </tr>
         {% for p in players %}
         <tr>
-            <td>{{ loop.counter }}</td>
+            <td>{{ forloop.counter }}</td>
             <td>{{ p.user.username }}</td>
             {% if user.player.role == 1 or p.role == 1%}
-                <td>{{p.role }}</td>
+                <td>{{ p.role }}</td>
             {% else %}
-                <td><i>Restricted Data</i></td>td>
+                <td><i>Restricted Data</i></td>
             {% endif %}
        </tr>
         {% endfor %}

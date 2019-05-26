@@ -3,7 +3,7 @@
 {% block content %}
 
     <h2>Welcome to <em>{{ request.user.player.room.name }}</em>!</h2> <br>
-    <div id='room-table'></div>
+    <div id='room-table'></div> <br>
     <button id="showrole">Press to show role</button>
     <div id="role" hidden=true></div>
 
@@ -22,6 +22,19 @@
             500
         )
     }
+
+    setInterval(
+        function()
+        {
+            $.ajax(
+                { url: "{% url 'table' %}", 
+                  success: function (data) 
+                        {
+                            $('#room-table').html(data).show();
+                         }
+                }
+                )
+        }, 1000)
 
     role = "Uninitialized"
     $("#showrole").mousedown(function(event)
