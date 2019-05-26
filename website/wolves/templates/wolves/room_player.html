@@ -3,7 +3,7 @@
 {% block content %}
 
     <h2>Welcome to <em>{{ request.user.player.room.name }}</em>!</h2> <br>
-
+    <div id='room-table'></div>
     <button id="showrole">Press to show role</button>
     <div id="role" hidden=true></div>
 
@@ -30,7 +30,7 @@
         {
             $.ajax({
                         url: "{% url 'role' %}",
-                        data: {},
+                        // data: {},
                         // dataType: 'json',
                         success: function (data) 
                         {

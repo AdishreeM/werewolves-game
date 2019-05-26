@@ -57,8 +57,8 @@ def index(request):
 
 def room(request):
     if request.method == 'POST' and request.user.player.role == 1: # Moderator
-            role_dict = {2:request.POST.get('doctor'), 3:request.POST.get('seer'),
-                             4:request.POST.get('wolf'), 5:request.POST.get('villager') }
+            role_dict = {2:int(request.POST.get('doctor')), 3:int(request.POST.get('seer')),
+                             4:int(request.POST.get('wolf')), 5:int(request.POST.get('villager')) }
             assign(request.user.player.room.name, role_dict)
             return render(request, 'wolves/room_mod.html')
     else:
@@ -68,8 +68,8 @@ def room(request):
             return render(request, 'wolves/room_player.html', {'roles': roles_i2c})
 
 def table(request):
-    players = request.user.room.players
-    return render(request, 'wolves/room_table.html', {'players': players})
+    players = request.user.player.room.players
+    return render(request, 'wolves/room_table.html', {'players': players, 'role_dict':roles_i2c})
 
 def role(request):
     present_role = request.user.player.role
