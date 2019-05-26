@@ -1,71 +1,94 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseForbidden
+from django.views import View
 from .models import Player, Room 
 from .namegen.generator import generate
 from .assign import assign
 
 roles_i2c = {0:'Unassigned', 1:'Moderator', 2:'Doctor', 3:'Seer', 4:'Werewolves', 5:'Villager'}
 
-def index(request):
-    # User not signed in
-    if not request.user.is_authenticated:
-        return render(request, 'wolves/index_anon.html')
-    
-    # User signed in
-    else:
-        # Room doesn't exist
-        if not hasattr(request.user, 'player'):
-            if request.method == 'GET':
-                return render(request, 'wolves/index_authed.html')
-            else:
-                # Create a room -> Moderator
-                if request.POST.get('choice') == 'create': 
-                    room_name = generate()
-                    flag = 0
-                    if Room.objects.filter(name=room_name).exists():
-                        flag = 1
-                        for _ in range(4):
-                            room_name = generate()
-                            if not Room.objects.filter(name=room_name).exists():
-                                flag = 0
-                                break
-                    if flag == 1:
-                        return HttpResponse("Sorry, we are facing heavy traffic. Try again later :/")
-                    else:
-                        new_room = Room(name=room_name, assgned = False)
-                        new_room.save()
-                        new_player = Player(user=request.user, room=new_room, role=1)
-                        new_player.save()
-                
-                    return redirect(room)
 
-                # Join a room
-                else:
-                    room_name = request.POST.get('room_name')
-                    if Room.objects.filter(name=room_name).exists():
-                        if not Player.objects.filter(user=request.user).exists():
-                            room_to_join = Room.objects.get(name=room_name)
-                            new_player = Player(user=request.user, room=room_to_join, role=0)
-                            new_player.save()
-                        return redirect(room)
-                    else:
-                        return HttpResponse("No such room exists o.0")
+class IndexView(View):
+
+    def get(self, request):
         
-        # Already belongs to a room
+        # Anonymous user
+        if not request.user.is_authenticated:
+            return render(request, 'wolves/index_anon.html')
+        
+        # Authenticated user
         else:
-            return redirect('room')        
+            # Doesn't have a player (and therefore a room),
+            if not hasattr(request.user, 'player'):
+                return render(request, 'wolves/index_authed.html')
+            # Has a player (and a room)
+            else:
+                return redirect('room')
 
-def room(request):
-    if request.method == 'POST' and request.user.player.role == 1: # Moderator
-            role_dict = {2:int(request.POST.get('doctor')), 3:int(request.POST.get('seer')),
-                             4:int(request.POST.get('wolf')), 5:int(request.POST.get('villager')) }
-            assign(request.user.player.room.name, role_dict)
-            return render(request, 'wolves/room_mod.html')
-    else:
+    def post(self, request):
+
+        # Can't create room if anonymous
+        if not request.user.is_authenticated:
+            return HttpResponseForbidden()
+
+        # Is authenticated
+        else:
+            # Create a room
+            if request.POST.get('choice') == 'create': 
+                
+                for _ in range(5):
+                    room_name = generate()
+                    try:
+                        Room.objects.get(name=room_name)
+                        continue
+                    except Room.DoesNotExist:
+                        Player.objects.update_or_create(
+                            user=user,
+                            defaults={'room': Room.objects.create(name=room_name),
+                                      'role': 1}
+                        )
+
+            # Join a room
+            else:
+                try:
+                    room = Room.objects.get(name=request.POST.get('room_name'))
+                except Room.DoesNotExist:
+                    return HttpResponse("No such room exists o.0")
+                
+                Player.objects.update_or_create(user=request.user, defaults={'room': room})
+
+            # In both cases, redirected to room
+            return redirect('room')
+
+
+class RoomView(View):
+
+    def get(self, request):
+        # User is moderator
         if request.user.player.role == 1:
             return render(request, 'wolves/room_mod.html')
+
+        # User is player
         else:
             return render(request, 'wolves/room_player.html', {'roles': roles_i2c})
+
+    
+    def post(self, request):
+        # If moderator sent the assignment dict, assign and
+        # render the same view
+        if request.user.player.is_moderator():
+            role_dict = {
+                            2:int(request.POST.get('doctor')),
+                            3:int(request.POST.get('seer')),
+                            4:int(request.POST.get('wolf')),
+                            5:int(request.POST.get('villager'))
+                        }
+            assign(request.user.player.room.name, role_dict)
+            return render(request, 'wolves/room_mod.html')
+
+        else:
+            return HttpResponseForbidden()
+
 
 def table(request):
     players = request.user.player.room.players
