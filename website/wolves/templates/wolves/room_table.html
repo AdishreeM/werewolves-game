@@ -10,7 +10,7 @@
             <td>{{ loop.counter }}</td>
             <td>{{ p.user.username }}</td>
             {% if user.player.role == 1 or p.role == 1%}
-                <td>{{ role_dict[p.role] }}</td>
+                <td>{{p.role }}</td>
             {% else %}
                 <td><i>Restricted Data</i></td>td>
             {% endif %}

@@ -68,7 +68,7 @@ def room(request):
             return render(request, 'wolves/room_player.html', {'roles': roles_i2c})
 
 def table(request):
-    players = request.user.player.room.players
+    players = request.user.player.room.players_set.all()
     return render(request, 'wolves/room_table.html', {'players': players, 'role_dict':roles_i2c})
 
 def role(request):
