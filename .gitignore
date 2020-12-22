@@ -19,3 +19,7 @@ db.sqlite3
 
 website/*/migrations/*
 !website/*/migrations/__init__.py
+
+# UI mode_modules and build
+/ui/build/
+/ui/node_modules/

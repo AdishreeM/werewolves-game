@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import json
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,10 +21,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '3o-y=+rc*z_^bo5h0541ko*^u(eaap7(8i*wjt&7!u-8($ax^c'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', "development_secret")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DJANGO_DEBUG', True)
 
 ALLOWED_HOSTS = ['*']
 
@@ -37,13 +38,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'wolves',
     'core',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -83,10 +87,25 @@ REST_FRAMEWORK = {
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': os.getenv("DJANGO_DATABASE_ENGINE", "django.db.backends.sqlite3"),
+        'HOST': os.getenv("DJANGO_DATABASE_HOST"),
+        'NAME': os.getenv("DJANGO_DATABASE_DBNAME", os.path.join(BASE_DIR, 'db.sqlite3')),
+        'USER': os.getenv("DJNANGO_DATABASE_USER"),
+        'PASSWORD': os.getenv("DJANGO_DATABASE_PASSWORD"),
+        'PORT': os.getenv("DJANGO_DATABASE_PORT"),
+        'OPTIONS': json.loads(os.getenv("DATABASE_OPTIONS", "{}")),
     }
 }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'HOST': 'wolves-pgsql.postgres.database.azure.com',
+#         'NAME': 'default',
+#         'USER': 'django_client@wolves-pgsql',
+#         'PASSWORD': 'applegoogle@1A',
+#         'PORT': '5432',
+#     }
+# }
 
 
 # Password validation
@@ -127,4 +146,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATIC_ROOT = './static'
+
 LOGIN_REDIRECT_URL = '/wolves/'
+
+CORS_ORIGIN_ALLOW_ALL = True

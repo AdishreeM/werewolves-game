@@ -1,0 +1,5 @@
+/website/static/
+.vscode
+.gitignore
+/ui/build/
+/ui/node_modules/

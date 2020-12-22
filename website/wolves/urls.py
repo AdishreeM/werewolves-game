@@ -1,9 +1,11 @@
-from django.urls import path
+from django.urls import include, path
 from . import views
 
 urlpatterns = [
+    # UI Bundle
     path('', views.IndexView.as_view(), name='index'),
-    path('room', views.RoomView.as_view(), name='room'),
-    path('table', views.table, name='table'),
-    path('role', views.role, name='role')
+
+    # APIs
+    path('api/', include('wolves.api.urls')),
+    path('ui/', include('wolves.ui.urls'))
 ]
