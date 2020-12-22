@@ -1,0 +1,202 @@
+@import url("https://fonts.googleapis.com/css?family=Arvo&display=swap");
+
+* {
+  box-sizing: border-box;
+  position: relative;
+
+  font-family: Arvo;
+  transition: ease-in-out 0.2s;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.viewport {
+  background: linear-gradient(180deg, #002604 0%, #000000 35%);
+
+  height: 100vh;
+  width: 100vw;
+}
+
+.content {
+  padding: 36px 52px;
+  display: flex;
+  flex-direction: column;
+
+  height: 100%;
+  width: 100%;
+
+  &__topbar {
+    height: 40px;
+
+    &__logo {
+      position: absolute;
+      left: 0;
+      top: 0;
+    
+      font-size: 24px;
+      color: white;
+    }
+
+    &__roomName {
+      position: absolute;
+      left: 10px;
+      top: 25px;
+    
+      font-size: 12px;
+      color: white;
+    }
+
+    &__hamburger {
+      position: absolute;
+      right: 0;
+      top: 4px;
+      height: 20px;
+      width: 20px;
+      background-image: url("./assets/hamburger.svg");
+    }
+
+    &__close {
+      position: absolute;
+      right: 0;
+      top: 4px;
+      font-size: 20px;
+      width: 20px;
+      color: white;
+    }
+  }
+
+  &__body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-content: space-around;
+    justify-content: space-around;
+  }
+}
+
+
+
+
+
+
+.actual-content {
+  display: flex;
+  flex-direction: column;
+
+  & > * {
+    margin-top: 40px;
+  }
+}
+
+.button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+
+  & > button,
+  a {
+    background: transparent;
+    color: white;
+    border: none;
+    font-size: 20px;
+
+    &.big {
+      height: 160px;
+    }
+
+    &:hover {
+      text-shadow: 0px 4px 4px rgba(255, 255, 255, 0.39);
+    }
+  }
+}
+
+input {
+  height: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  border-radius: 3px;
+  background: transparent;
+  color: white;
+  text-align: center;
+}
+
+.room-name-input {
+  
+  transition: ease-in-out 0.5s;
+
+  &:focus {
+    border: 1px solid white;
+  }
+
+  &--invalid {
+    border-color: red;
+    border-width: 2px;
+  }
+}
+
+.content-heading {
+  font-size: 20px;
+  color: white;
+  text-align: center;
+}
+
+.player-list {
+  display: flex;
+  justify-content: space-between;
+
+  &__column {
+    display: flex;
+    flex-direction: column;
+
+    width: 45%;
+
+    &__entry {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      width: 100%;
+
+      &__name {
+        color: white;
+        font-size: 14px;
+      }
+
+      &__role {
+        color: white;
+        font-size: 8px;
+
+        &.hideRoles {
+          color: transparent;
+        }
+      }
+    }
+  }
+}
+
+.hamburger-menu {
+  transition: ease-in-out 0.4s;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  backdrop-filter: blur(10px);
+  background-color: rgba(0, 0, 0, 0);
+  overflow: hidden;
+  position: absolute;
+  font-size: 24px;
+  top: 76px; // padding of content + topbar height
+  width: 100%;
+  left: 0;
+  height: 0;
+
+  &--active {
+    height: calc(100% - 112px);
+    padding: 80px;
+  }
+}
